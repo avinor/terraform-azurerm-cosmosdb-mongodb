@@ -13,3 +13,8 @@ output "connection_strings" {
   value       = azurerm_cosmosdb_account.main.connection_strings
 }
 
+output "databases" {
+  description = "A map with database name with the ID for the database"
+  value       = { for db in azurerm_cosmosdb_mongo_database.main : db.name => db.id }
+}
+
