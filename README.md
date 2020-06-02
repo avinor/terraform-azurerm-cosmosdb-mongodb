@@ -1,20 +1,20 @@
-# Cosmosdb account
+# Cosmosdb account for mongodb
 
-Terraform module to create a CosmosDB account in Azure with set of databases and users. Database allows for custom configuration and enforces SSL for security reasons.
-
+Terraform module to create a CosmosDB account with mongodb in Azure with set of databases.
 
 
 ## Limitations
 
-Supported databases are at the moment only mongodb
+TODO
 
 
 ## Usage
 
-TODO
+Example showing deployment of a server with a single database.
+
 ```terraform
 module "cosmosdb" {
-  source = "github.com/avinor/terraform-azurerm-cosmonsdb"
+  source = "github.com/avinor/terraform-azurerm-cosmonsdb-mongodb"
 
   name                = "cosmosdb"
   resource_group_name = "cosmosdb-rg"

@@ -1,4 +1,4 @@
-module github.com/avinor/terraform-azurerm-cosmosdb/test
+module github.com/avinor/terraform-azurerm-cosmosdb-mongodb/test
 
 go 1.14
 
