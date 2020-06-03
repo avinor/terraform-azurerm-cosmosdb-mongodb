@@ -4,7 +4,7 @@ output "id" {
 }
 
 output "endpoint" {
-  description = "The endpoint usedto coonnect to the CosmosDB account."
+  description = "The endpoint used to connect to the CosmosDB account."
   value       = azurerm_cosmosdb_account.main.endpoint
 }
 

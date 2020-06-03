@@ -18,13 +18,8 @@ variable "tags" {
 
 variable "databases" {
   description = "List of databases"
-  type = list(object(
-    {
-      name       = string,
-      throughput = number
-    }
-  ))
-  default = []
+  type        = list(object({ name = string, throughput = number }))
+  default     = []
 }
 
 variable "diagnostics" {

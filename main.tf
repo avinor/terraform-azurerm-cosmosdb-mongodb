@@ -8,7 +8,7 @@ provider "azurerm" {
 }
 
 locals {
-  diag_namespace_logs = [
+  diag_cosmosdb_logs = [
     "DataPlaneRequests",
     "MongoRequests",
     "QueryRuntimeStatistics",
@@ -18,7 +18,7 @@ locals {
     "CassandraRequests",
   ]
 
-  diag_namespace_metrics = [
+  diag_cosmosdb_metrics = [
     "Requests",
   ]
 
@@ -27,8 +27,8 @@ locals {
     log_analytics_id   = contains(local.diag_resource_list, "microsoft.operationalinsights") ? var.diagnostics.destination : null
     storage_account_id = contains(local.diag_resource_list, "Microsoft.Storage") ? var.diagnostics.destination : null
     event_hub_auth_id  = contains(local.diag_resource_list, "Microsoft.EventHub") ? var.diagnostics.destination : null
-    metric             = contains(var.diagnostics.metrics, "all") ? local.diag_namespace_metrics : var.diagnostics.metrics
-    log                = contains(var.diagnostics.logs, "all") ? local.diag_namespace_logs : var.diagnostics.logs
+    metric             = contains(var.diagnostics.metrics, "all") ? local.diag_cosmosdb_metrics : var.diagnostics.metrics
+    log                = contains(var.diagnostics.logs, "all") ? local.diag_cosmosdb_logs : var.diagnostics.logs
     } : {
     log_analytics_id   = null
     storage_account_id = null
@@ -52,12 +52,12 @@ resource "azurerm_cosmosdb_account" "main" {
   offer_type          = "Standard"
   kind                = "MongoDB"
 
-  enable_automatic_failover = true
+  enable_automatic_failover = false
 
   consistency_policy {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 10
-    max_staleness_prefix    = 200
+    consistency_level       = "Session"
+    max_interval_in_seconds = 5
+    max_staleness_prefix    = 100
   }
 
   geo_location {
@@ -66,11 +66,10 @@ resource "azurerm_cosmosdb_account" "main" {
   }
 
   tags = var.tags
-
 }
 
 resource "azurerm_cosmosdb_mongo_database" "main" {
-  count = var.databases != null ? length(var.databases) : 0
+  count = length(var.databases)
 
   name                = var.databases[count.index].name
   resource_group_name = azurerm_resource_group.main.name
@@ -78,7 +77,7 @@ resource "azurerm_cosmosdb_mongo_database" "main" {
   throughput          = var.databases[count.index].throughput
 }
 
-resource "azurerm_monitor_diagnostic_setting" "namespace" {
+resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
   count                          = var.diagnostics != null ? 1 : 0
   name                           = "${var.name}-ns-diag"
   target_resource_id             = azurerm_cosmosdb_account.main.id

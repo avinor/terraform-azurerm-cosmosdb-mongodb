@@ -14,7 +14,7 @@ Example showing deployment of a server with a single database.
 
 ```terraform
 module "cosmosdb" {
-  source = "github.com/avinor/terraform-azurerm-cosmonsdb-mongodb"
+  source = "github.com/avinor/terraform-azurerm-cosmosdb-mongodb"
 
   name                = "cosmosdb"
   resource_group_name = "cosmosdb-rg"
