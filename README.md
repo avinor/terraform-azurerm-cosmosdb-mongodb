@@ -20,12 +20,14 @@ module "cosmosdb" {
   resource_group_name = "cosmosdb-rg"
   location            = "westeurope"
 
-  databases = [
-    {
-      name       = "mydb1",
-      throughput = 400,
+  databases = {
+    mydb  = {
+      throughput = 400
     }
-  ]
+    mydb2 = {
+      throughput = 400
+    }
+  }
 }
 ```
 

@@ -54,6 +54,10 @@ resource "azurerm_cosmosdb_account" "main" {
 
   enable_automatic_failover = false
 
+  capabilities {
+    name = "EnableMongo"
+  }
+
   consistency_policy {
     consistency_level       = "Session"
     max_interval_in_seconds = 5
@@ -69,12 +73,12 @@ resource "azurerm_cosmosdb_account" "main" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "main" {
-  count = length(var.databases)
+  for_each = var.databases
 
-  name                = var.databases[count.index].name
+  name                = each.key
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_cosmosdb_account.main.name
-  throughput          = var.databases[count.index].throughput
+  throughput          = each.value.throughput
 }
 
 resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
