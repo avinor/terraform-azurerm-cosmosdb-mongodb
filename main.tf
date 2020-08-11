@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "~> 2.13.0"
+  version = "~> 2.22.0"
   features {}
 }
 
@@ -64,6 +64,7 @@ resource "azurerm_cosmosdb_account" "main" {
   kind                = "MongoDB"
 
   enable_automatic_failover = false
+  ip_range_filter           = var.ip_range_filter
 
   capabilities {
     name = "EnableMongo"
