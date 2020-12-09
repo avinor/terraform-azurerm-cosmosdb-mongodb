@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "~> 2.37.0"
+  version = "~> 2.39.0"
   features {}
 }
 
@@ -27,6 +27,7 @@ locals {
     "PartitionKeyRUConsumption",
     "ControlPlaneRequests",
     "CassandraRequests",
+    "GremlinRequests",
   ]
 
   diag_cosmosdb_metrics = [
