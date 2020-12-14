@@ -21,8 +21,9 @@ variable "databases" {
   type = map(object({
     throughput = number,
     collections = list(object({
-      name      = string
-      shard_key = string
+      name       = string
+      shard_key  = string
+      throughput = number
     }))
   }))
   default = {}

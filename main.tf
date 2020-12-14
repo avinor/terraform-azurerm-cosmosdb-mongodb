@@ -12,9 +12,10 @@ locals {
   collections = flatten([
     for db_key, db in var.databases : [
       for col in db.collections : {
-        name      = col.name
-        database  = db_key
-        shard_key = col.shard_key
+        name       = col.name
+        database   = db_key
+        shard_key  = col.shard_key
+        throughput = col.throughput
       }
     ]
   ])
@@ -102,6 +103,7 @@ resource "azurerm_cosmosdb_mongo_collection" main {
   account_name        = azurerm_cosmosdb_account.main.name
   database_name       = each.value.database
   shard_key           = each.value.shard_key
+  throughput          = each.value.throughput
 }
 
 resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
