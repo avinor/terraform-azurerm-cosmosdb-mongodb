@@ -10,7 +10,10 @@ module "cosmosdb" {
   databases = {
     mydb1 = {
       throughput  = 400
-      collections = [{ name = "mycol1", shard_key = "somekey" }]
+      collections = [
+        { name = "col0", shard_key = "somekey_0", throughput = 1000 },
+        { name = "col1", shard_key = "somekey_1" }
+      ]
     }
     mydb2 = {
       throughput  = 600
