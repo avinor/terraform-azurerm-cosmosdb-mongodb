@@ -49,5 +49,5 @@ variable "ip_range_filter" {
 variable "capabilities" {
   description = "Configures the capabilities to enable for this Cosmos DB account. Check README.md for valid values."
   type        = list(string)
-  default     = ["EnableMongo"]
+  default     = null
 }

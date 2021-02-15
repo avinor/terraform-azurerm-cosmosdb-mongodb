@@ -69,7 +69,14 @@ resource "azurerm_cosmosdb_account" "main" {
   ip_range_filter           = var.ip_range_filter
 
   capabilities {
-    name = var.capabilities
+    name = "EnableMongo"
+  }
+
+  dynamic "capabilities" {
+    for_each = var.capabilities != null ? var.capabilities : []
+    content {
+      name = capabilities.value
+    }
   }
 
   consistency_policy {
