@@ -46,4 +46,4 @@ Setting `all` in logs and metrics will send all possible diagnostics to destinat
 
 The variable `capabilities` can be used to enable following capabilities (comma separated): 
 
-AllowSelfServeUpgradeToMongo36, DisableRateLimitingResponses, EnableAggregationPipeline, EnableCassandra, EnableGremlin, EnableMongo, EnableTable, EnableServerless, MongoDBv3.4 and mongoEnableDocLevelTTL.
+AllowSelfServeUpgradeToMongo36, DisableRateLimitingResponses, EnableAggregationPipeline, EnableCassandra, EnableGremlin, EnableTable, EnableServerless, MongoDBv3.4 and mongoEnableDocLevelTTL.
