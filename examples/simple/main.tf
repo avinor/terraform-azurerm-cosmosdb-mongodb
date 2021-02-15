@@ -4,6 +4,7 @@ module "cosmosdb" {
   name                = "cosmosdb"
   resource_group_name = "cosmosdb-rg"
   location            = "westeurope"
+  capabilities        = ["DisableRateLimitingResponses"]
 
   ip_range_filter = "10.221.100.10,10.221.101.0/24"
 

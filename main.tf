@@ -72,6 +72,13 @@ resource "azurerm_cosmosdb_account" "main" {
     name = "EnableMongo"
   }
 
+  dynamic "capabilities" {
+    for_each = var.capabilities != null ? var.capabilities : []
+    content {
+      name = capabilities.value
+    }
+  }
+
   consistency_policy {
     consistency_level       = "Session"
     max_interval_in_seconds = 5
