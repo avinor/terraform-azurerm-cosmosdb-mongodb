@@ -116,6 +116,7 @@ resource "azurerm_cosmosdb_mongo_collection" main {
     ignore_changes = [index]
   }
 
+  depends_on = [azurerm_cosmosdb_mongo_database.main]
 }
 
 resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
