@@ -5,7 +5,7 @@ Terraform module to create a CosmosDB account with mongodb in Azure with set of 
 
 ## Limitations
 
-TODO
+This module only support Cosmos DB API for MongoDB and capability EnableMongo can not be disabled.
 
 
 ## Usage
