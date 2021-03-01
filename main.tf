@@ -111,6 +111,11 @@ resource "azurerm_cosmosdb_mongo_collection" main {
   database_name       = each.value.database
   shard_key           = each.value.shard_key
   throughput          = each.value.throughput
+
+  lifecycle {
+    ignore_changes = [index]
+  }
+
 }
 
 resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
