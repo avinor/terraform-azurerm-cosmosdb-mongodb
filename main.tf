@@ -66,7 +66,7 @@ resource "azurerm_cosmosdb_account" "main" {
   kind                = "MongoDB"
 
   enable_automatic_failover = false
-  ip_range_filter           = var.ip_range_filter
+  ip_range_filter           = join(",", var.ip_range_filter)
 
   capabilities {
     name = "EnableMongo"

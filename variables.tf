@@ -41,9 +41,9 @@ variable "diagnostics" {
 }
 
 variable "ip_range_filter" {
-  description = "CosmosDB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form to be included as the allowed list of client IP's for a given database account. IP addresses/ranges must be comma separated and must not contain any spaces"
-  type        = string
-  default     = null
+  description = "CosmosDB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form to be included as the allowed list of client IP's for a given database account. IP addresses/ranges must be a comma separated list of strings"
+  type        = list(string)
+  default     = []
 }
 
 variable "capabilities" {
