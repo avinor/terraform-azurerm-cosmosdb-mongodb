@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "~> 2.49.0"
+  version = "~> 2.51.0"
   features {}
 }
 
@@ -119,6 +119,10 @@ resource "azurerm_cosmosdb_mongo_collection" main {
   depends_on = [azurerm_cosmosdb_mongo_database.main]
 }
 
+data "azurerm_monitor_diagnostic_categories" "default" {
+  resource_id = azurerm_cosmosdb_account.main.id
+}
+
 resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
   count                          = var.diagnostics != null ? 1 : 0
   name                           = "${var.name}-ns-diag"
@@ -128,24 +132,34 @@ resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
   eventhub_name                  = local.parsed_diag.event_hub_auth_id != null ? var.diagnostics.eventhub_name : null
   storage_account_id             = local.parsed_diag.storage_account_id
 
+  # For each available log category, check if it should be enabled and set enabled = true if it should.
+  # All other categories are created with enabled = false to prevent TF from showing changes happening with each plan/apply.
+  # Ref: https://github.com/terraform-providers/terraform-provider-azurerm/issues/7235
   dynamic "log" {
-    for_each = local.parsed_diag.log
+    for_each = data.azurerm_monitor_diagnostic_categories.default.logs
     content {
       category = log.value
+      enabled  = contains(local.parsed_diag.log, log.value)
 
       retention_policy {
         enabled = false
+        days    = 0
       }
     }
   }
 
+  # For each available metric category, check if it should be enabled and set enabled = true if it should.
+  # All other categories are created with enabled = false to prevent TF from showing changes happening with each plan/apply.
+  # Ref: https://github.com/terraform-providers/terraform-provider-azurerm/issues/7235
   dynamic "metric" {
-    for_each = local.parsed_diag.metric
+    for_each = data.azurerm_monitor_diagnostic_categories.default.metrics
     content {
       category = metric.value
+      enabled  = contains(local.parsed_diag.metric, metric.value)
 
       retention_policy {
         enabled = false
+        days    = 0
       }
     }
   }
