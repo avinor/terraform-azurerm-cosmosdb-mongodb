@@ -19,7 +19,7 @@ variable "tags" {
 variable "databases" {
   description = "List of databases"
   type = map(object({
-    throughput = number,
+    throughput = number
     collections = list(object({
       name       = string
       shard_key  = string
@@ -32,9 +32,9 @@ variable "databases" {
 variable "diagnostics" {
   description = "Diagnostic settings for those resources that support it. See README.md for details on configuration."
   type = object({
-    destination   = string,
-    eventhub_name = string,
-    logs          = list(string),
+    destination   = string
+    eventhub_name = string
+    logs          = list(string)
     metrics       = list(string)
   })
   default = null
