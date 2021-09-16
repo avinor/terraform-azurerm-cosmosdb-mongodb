@@ -19,11 +19,13 @@ variable "tags" {
 variable "databases" {
   description = "List of databases"
   type = map(object({
-    throughput = number
+    throughput     = number
+    max_throughput = number
     collections = list(object({
-      name       = string
-      shard_key  = string
-      throughput = number
+      name           = string
+      shard_key      = string
+      throughput     = number
+      max_throughput = number
     }))
   }))
   default = {}
