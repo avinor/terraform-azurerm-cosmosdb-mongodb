@@ -10,7 +10,7 @@ This module only support Cosmos DB API for MongoDB and capability EnableMongo ca
 
 ## Usage
 
-Example showing deployment of a server with a single database.
+Example showing deployment of a server with two databases.
 
 ```terraform
 module "cosmosdb" {
@@ -25,14 +25,16 @@ module "cosmosdb" {
   databases = {
     mydb  = {
       throughput = 400
+      max_throughput = null
       collections = [
-        { name = "col0", shard_key = "somekey_0", throughput = 1000 },
-        { name = "col1", shard_key = "somekey_1", throughput = null }
+        { name = "col0", shard_key = "somekey_0", throughput = 1000, max_throughput = null },
+        { name = "col1", shard_key = "somekey_1", throughput = null, max_throughput = null }
       ]
     }
     mydb2 = {
-      throughput = 400
-      collections = [{ name = "col2", shard_key = "someotherkey", throughput = null }]
+      throughput = null
+      max_throughput = 5000
+      collections = [{ name = "col2", shard_key = "someotherkey", throughput = null, max_throughput = null }]
     }
   }
 }
@@ -57,3 +59,26 @@ The variable `capabilities` can be used to enable following capabilities (list o
 * EnableServerless
 * MongoDBv3.4 
 * mongoEnableDocLevelTTL
+
+## Throughput
+
+There are two ways of configuring throughput (RU/s); manual or autoscale. 
+
+To use manual throughput, set `throughput` either on a database or a collection. E.g:
+```terraform
+mydb = {
+  throughput     = 400
+  max_throughput = null
+  collections = []
+}
+```
+
+To use autoscale throughput, set `max_throughput` on a database or a collection. E.g:
+```terraform
+mydb = {
+  throughput     = null
+  max_throughput = 4000
+  collections = []
+}
+```
+_Note: `throughput` and `max_throughput` cannot be used in conjunction_

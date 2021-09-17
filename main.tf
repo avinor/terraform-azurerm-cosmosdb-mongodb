@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.53.0"
+      version = "~> 2.76.0"
     }
   }
 }
@@ -17,10 +17,11 @@ locals {
   collections = flatten([
     for db_key, db in var.databases : [
       for col in db.collections : {
-        name       = col.name
-        database   = db_key
-        shard_key  = col.shard_key
-        throughput = col.throughput
+        name           = col.name
+        database       = db_key
+        shard_key      = col.shard_key
+        throughput     = col.throughput
+        max_throughput = col.max_throughput
       }
     ]
   ])
@@ -90,6 +91,13 @@ resource "azurerm_cosmosdb_mongo_database" "main" {
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_cosmosdb_account.main.name
   throughput          = each.value.throughput
+
+  dynamic "autoscale_settings" {
+    for_each = each.value.max_throughput != null ? [each.value.max_throughput] : []
+    content {
+      max_throughput = autoscale_settings.value
+    }
+  }
 }
 
 resource "azurerm_cosmosdb_mongo_collection" main {
@@ -101,6 +109,13 @@ resource "azurerm_cosmosdb_mongo_collection" main {
   database_name       = each.value.database
   shard_key           = each.value.shard_key
   throughput          = each.value.throughput
+
+  dynamic "autoscale_settings" {
+    for_each = each.value.max_throughput != null ? [each.value.max_throughput] : []
+    content {
+      max_throughput = autoscale_settings.value
+    }
+  }
 
   lifecycle {
     ignore_changes = [index]
