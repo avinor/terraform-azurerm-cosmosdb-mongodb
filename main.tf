@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.76.0"
+      version = "~> 2.83.0"
     }
   }
 }
@@ -100,7 +100,7 @@ resource "azurerm_cosmosdb_mongo_database" "main" {
   }
 }
 
-resource "azurerm_cosmosdb_mongo_collection" main {
+resource "azurerm_cosmosdb_mongo_collection" "main" {
   for_each = { for col in local.collections : col.name => col }
 
   name                = each.value.name
