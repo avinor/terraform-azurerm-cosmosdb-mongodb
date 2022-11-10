@@ -2,7 +2,7 @@ module github.com/avinor/terraform-azurerm-cosmosdb-mongodb/test
 
 go 1.19
 
-require github.com/gruntwork-io/terratest v0.40.22
+require github.com/gruntwork-io/terratest v0.41.0
 
 require (
 	cloud.google.com/go v0.83.0 // indirect

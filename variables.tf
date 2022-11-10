@@ -48,6 +48,12 @@ variable "ip_range_filter" {
   default     = []
 }
 
+variable "virtual_network_rules" {
+  description = "Specifies virtual_network_rules resources, used to define which subnets are allowed to access this CosmosDB account"
+  type        = list(string)
+  default     = []
+}
+
 variable "capabilities" {
   description = "Configures the capabilities to enable for this Cosmos DB account. Check README.md for valid values."
   type        = list(string)
