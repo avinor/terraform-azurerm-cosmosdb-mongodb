@@ -1,9 +1,9 @@
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 1.3"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.23.0"
+      version = "~> 3.30.0"
     }
   }
 }
@@ -45,19 +45,19 @@ locals {
 resource "azurerm_resource_group" "main" {
   name     = var.resource_group_name
   location = var.location
-
-  tags = var.tags
+  tags     = var.tags
 }
 
 resource "azurerm_cosmosdb_account" "main" {
-  name                = "${var.name}-cosmos"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
-  offer_type          = "Standard"
-  kind                = "MongoDB"
-
-  enable_automatic_failover = false
-  ip_range_filter           = join(",", var.ip_range_filter)
+  name                              = "${var.name}-cosmos"
+  location                          = azurerm_resource_group.main.location
+  resource_group_name               = azurerm_resource_group.main.name
+  offer_type                        = "Standard"
+  kind                              = "MongoDB"
+  enable_automatic_failover         = false
+  ip_range_filter                   = join(",", var.ip_range_filter)
+  is_virtual_network_filter_enabled = length(var.virtual_network_rules) > 0
+  tags                              = var.tags
 
   capabilities {
     name = "EnableMongo"
@@ -81,7 +81,14 @@ resource "azurerm_cosmosdb_account" "main" {
     failover_priority = 0
   }
 
-  tags = var.tags
+  dynamic "virtual_network_rule" {
+    for_each = var.virtual_network_rules
+
+    content {
+      id                                   = virtual_network_rule.value
+      ignore_missing_vnet_service_endpoint = false
+    }
+  }
 }
 
 resource "azurerm_cosmosdb_mongo_database" "main" {
