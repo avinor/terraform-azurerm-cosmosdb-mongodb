@@ -14,13 +14,7 @@ module "cosmosdb" {
 
   databases = {
     mydb = {
-      throughput     = 400
-      max_throughput = null
-      collections    = [{ name = "mycol1", shard_key = "somekey", throughput = null, max_throughput = null }]
+      collections = [{ name = "mycol1", shard_key = "somekey" }]
     }
-  }
-
-  tags = {
-    tag1 = "value1"
   }
 }
