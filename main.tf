@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.30.0"
+      version = "~> 3.31.0"
     }
   }
 }
@@ -116,6 +116,11 @@ resource "azurerm_cosmosdb_mongo_collection" "main" {
   database_name       = each.value.database
   shard_key           = each.value.shard_key
   throughput          = each.value.throughput
+
+  index {
+    keys   = ["_id"]
+    unique = true
+  }
 
   dynamic "autoscale_settings" {
     for_each = each.value.max_throughput != null ? [each.value.max_throughput] : []
