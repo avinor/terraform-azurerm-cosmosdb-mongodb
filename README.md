@@ -12,27 +12,25 @@ Example showing deployment of a server with two databases.
 
 ```terraform
 module "cosmosdb" {
-  source = "github.com/avinor/terraform-azurerm-cosmosdb-mongodb"
+
+  source = "github.com/avinor/terraform-azurerm-cosmosdb-mongodb?ref=v3.1.1"
 
   name                = "cosmosdb"
   resource_group_name = "cosmosdb-rg"
   location            = "westeurope"
   capabilities        = ["DisableRateLimitingResponses"]
 
-
   databases = {
     mydb = {
-      throughput     = 400
-      max_throughput = null
-      collections    = [
-        { name = "col0", shard_key = "somekey_0", throughput = 1000, max_throughput = null },
-        { name = "col1", shard_key = "somekey_1", throughput = null, max_throughput = null }
+      throughput  = 400
+      collections = [
+        { name = "col0", shard_key = "somekey_0", throughput = 1000 },
+        { name = "col1", shard_key = "somekey_1" },
       ]
     }
     mydb2 = {
-      throughput     = null
       max_throughput = 5000
-      collections    = [{ name = "col2", shard_key = "someotherkey", throughput = null, max_throughput = null }]
+      collections    = [{ name = "col2", shard_key = "someotherkey" }]
     }
   }
 }
@@ -70,9 +68,8 @@ To use manual throughput, set `throughput` either on a database or a collection.
 
 ```terraform
 mydb = {
-  throughput     = 400
-  max_throughput = null
-  collections    = []
+  throughput  = 400
+  collections = []
 }
 ```
 
@@ -80,7 +77,6 @@ To use autoscale throughput, set `max_throughput` on a database or a collection.
 
 ```terraform
 mydb = {
-  throughput     = null
   max_throughput = 4000
   collections    = []
 }
