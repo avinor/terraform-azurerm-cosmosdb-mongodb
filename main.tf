@@ -130,7 +130,7 @@ resource "azurerm_cosmosdb_mongo_collection" "main" {
   }
 
   lifecycle {
-    ignore_changes = [index]
+    ignore_changes = [index, default_ttl_seconds]
   }
 
   depends_on = [azurerm_cosmosdb_mongo_database.main]
