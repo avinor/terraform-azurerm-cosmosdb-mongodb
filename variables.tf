@@ -31,6 +31,15 @@ variable "databases" {
   default = {}
 }
 
+variable "additional_regions" {
+  description = "List of additional regions for multi-region replication"
+  type = map(object({
+    location          = string
+    failover_priority = number
+  }))
+  default = {}
+}
+
 variable "diagnostics" {
   description = "Diagnostic settings for those resources that support it. See README.md for details on configuration."
   type = object({

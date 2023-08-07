@@ -81,6 +81,14 @@ resource "azurerm_cosmosdb_account" "main" {
     failover_priority = 0
   }
 
+  dynamic "geo_location" {
+    for_each = var.additional_regions
+    content {
+      location          = geo_location.value.location
+      failover_priority = geo_location.value.failover_priority
+    }
+  }
+
   dynamic "virtual_network_rule" {
     for_each = var.virtual_network_rules
 
