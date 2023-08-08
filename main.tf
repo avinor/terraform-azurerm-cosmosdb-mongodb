@@ -54,7 +54,7 @@ resource "azurerm_cosmosdb_account" "main" {
   resource_group_name               = azurerm_resource_group.main.name
   offer_type                        = "Standard"
   kind                              = "MongoDB"
-  enable_automatic_failover         = false
+  enable_automatic_failover         = var.enable_automatic_failover
   ip_range_filter                   = join(",", var.ip_range_filter)
   is_virtual_network_filter_enabled = length(var.virtual_network_rules) > 0
   tags                              = var.tags
@@ -79,6 +79,15 @@ resource "azurerm_cosmosdb_account" "main" {
   geo_location {
     location          = azurerm_resource_group.main.location
     failover_priority = 0
+  }
+
+  dynamic "geo_location" {
+    for_each = var.additional_geo_locations
+    content {
+      location          = geo_location.value.location
+      failover_priority = geo_location.value.failover_priority
+      zone_redundant    = geo_location.value.zone_redundant
+    }
   }
 
   dynamic "virtual_network_rule" {
