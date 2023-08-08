@@ -10,6 +10,12 @@ variable "location" {
   description = "The Azure Region in which to create resource."
 }
 
+variable "enable_automatic_failover" {
+  description = "Enable automatic failover for this Cosmos DB account."
+  type        = bool
+  default     = false
+}
+
 variable "tags" {
   description = "Tags to apply to all resources created."
   type        = map(string)
@@ -31,7 +37,7 @@ variable "databases" {
   default = {}
 }
 
-variable "locations" {
+variable "additional_geo_locations" {
   description = "List of locations the geographic locations the data is replicated to."
   type = map(object({
     location          = string
