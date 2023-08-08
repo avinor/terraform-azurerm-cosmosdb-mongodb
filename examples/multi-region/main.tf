@@ -5,7 +5,7 @@ module "cosmosdb" {
   resource_group_name       = "cosmosdb-rg"
   location                  = "westeurope"
   capabilities              = ["DisableRateLimitingResponses"]
-  enable_automatic_failover = true
+  enable_automatic_failover = true # false by default
 
   ip_range_filter = ["10.221.100.10", "10.221.101.0/24"]
 
