@@ -31,11 +31,12 @@ variable "databases" {
   default = {}
 }
 
-variable "additional_regions" {
-  description = "List of additional regions for multi-region replication"
+variable "locations" {
+  description = "List of locations the geographic locations the data is replicated to."
   type = map(object({
     location          = string
     failover_priority = number
+    zone_redundant    = optional(bool)
   }))
   default = {}
 }

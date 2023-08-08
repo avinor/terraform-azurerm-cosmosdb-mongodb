@@ -76,16 +76,12 @@ resource "azurerm_cosmosdb_account" "main" {
     max_staleness_prefix    = 100
   }
 
-  geo_location {
-    location          = azurerm_resource_group.main.location
-    failover_priority = 0
-  }
-
   dynamic "geo_location" {
-    for_each = var.additional_regions
+    for_each = var.locations
     content {
       location          = geo_location.value.location
       failover_priority = geo_location.value.failover_priority
+      zone_redundant    = geo_location.value.zone_redundant
     }
   }
 
