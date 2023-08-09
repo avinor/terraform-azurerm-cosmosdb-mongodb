@@ -1,10 +1,11 @@
 module "cosmosdb" {
   source = "../../"
 
-  name                = "cosmosdb"
-  resource_group_name = "cosmosdb-rg"
-  location            = "westeurope"
-  capabilities        = ["DisableRateLimitingResponses"]
+  name                 = "cosmosdb"
+  resource_group_name  = "cosmosdb-rg"
+  location             = "westeurope"
+  capabilities         = ["DisableRateLimitingResponses"]
+  mongo_server_version = "4.2"
 
   ip_range_filter = ["10.221.100.10", "10.221.101.0/24"]
 
