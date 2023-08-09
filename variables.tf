@@ -2,6 +2,12 @@ variable "name" {
   description = "Name of the CosmosDB Account."
 }
 
+variable "mongo_server_version" {
+  description = "The Server Version of a MongoDB account."
+  type        = string
+  default     = null
+}
+
 variable "resource_group_name" {
   description = "Name of resource group to deploy resources in."
 }

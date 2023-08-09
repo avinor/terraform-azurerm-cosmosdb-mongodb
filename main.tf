@@ -58,6 +58,7 @@ resource "azurerm_cosmosdb_account" "main" {
   ip_range_filter                   = join(",", var.ip_range_filter)
   is_virtual_network_filter_enabled = length(var.virtual_network_rules) > 0
   tags                              = var.tags
+  mongo_server_version              = var.mongo_server_version
 
   capabilities {
     name = "EnableMongo"
