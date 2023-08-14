@@ -19,7 +19,7 @@ module "cosmosdb" {
   }
 
   diagnostics = {
-    destination   = "test"
+    destination   = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.OperationalInsights/workspaces/my-workspace"
     eventhub_name = "diagnostics"
     logs          = ["all"]
     metrics       = ["all"]

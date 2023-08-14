@@ -1,9 +1,9 @@
 terraform {
-  required_version = ">= 1.3"
+  required_version = ">= 1.5.5"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.31.0"
+      version = "~> 3.69.0"
     }
   }
 }
@@ -159,14 +159,13 @@ resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
   eventhub_name                  = local.parsed_diag.event_hub_auth_id != null ? var.diagnostics.eventhub_name : null
   storage_account_id             = local.parsed_diag.storage_account_id
 
-  # For each available log category, check if it should be enabled and set enabled = true if it should.
-  # All other categories are created with enabled = false to prevent TF from showing changes happening with each plan/apply.
+  # Enable each log category. All other categories are created with enabled = false
+  # to prevent TF from showing changes happening with each plan/apply.
   # Ref: https://github.com/terraform-providers/terraform-provider-azurerm/issues/7235
-  dynamic "log" {
+  dynamic "enabled_log" {
     for_each = data.azurerm_monitor_diagnostic_categories.default.log_category_types
     content {
-      category = log.value
-      enabled  = contains(local.parsed_diag.log, "all") || contains(local.parsed_diag.log, log.value)
+      category = enabled_log.value
 
       retention_policy {
         enabled = false
