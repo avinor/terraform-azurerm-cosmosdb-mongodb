@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.5.5"
+  required_version = ">= 1.3"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -163,7 +163,10 @@ resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
   # to prevent TF from showing changes happening with each plan/apply.
   # Ref: https://github.com/terraform-providers/terraform-provider-azurerm/issues/7235
   dynamic "enabled_log" {
-    for_each = data.azurerm_monitor_diagnostic_categories.default.log_category_types
+    for_each = {
+      for k, v in data.azurerm_monitor_diagnostic_categories.default.log_category_types : k => v
+      if contains(local.parsed_diag.log, "all") || contains(local.parsed_diag.log, v)
+    }
     content {
       category = enabled_log.value
 
